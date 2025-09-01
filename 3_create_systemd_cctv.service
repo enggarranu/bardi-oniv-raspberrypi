@@ -1,0 +1,15 @@
+[Unit]
+Description=FFMPEG recorder for Teras Depan
+After=network.target network-online.target data-SSD.mount
+Requires=data-SSD.mount
+
+[Service]
+User=root
+Restart=always
+RestartSec=30
+ExecStart=/usr/bin/ffmpeg -rtsp_transport tcp -i "rtsp://<USER>:<PASSWORD>@<IP_CAMERA>:<PORT_RESULT_FROM_NMAP>/V_ENC_000" -c copy -map 0 -f segment -segment_time 600 -strftime 1 /path/to/ssd/cctv-%%Y-%%m-%%d_%%H-%%M-%%S.mkv
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
